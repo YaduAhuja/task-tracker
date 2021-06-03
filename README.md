@@ -1,4 +1,4 @@
-# task-tracker
+# Task Tracker
 
 # Getting Started with Create React App
 
