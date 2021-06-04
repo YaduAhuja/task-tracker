@@ -9,6 +9,8 @@ const App = () => {
 		tasksList: []
 	});
 
+	const [showAddForm, setShowAddForm] = useState(false)
+
 	const deleteTask = (id) => {
 		setTaskData({
 			...taskData,
@@ -33,8 +35,8 @@ const App = () => {
 
 	return (
 		<div className='container'>
-			<Header />
-			<AddForm addTask={addTask} />
+			<Header toggleAddForm={() => setShowAddForm(!showAddForm)} showAddForm={showAddForm} />
+			{ showAddForm && <AddForm addTask={addTask} />}
 			{ taskData.tasksList.length > 0 ?
 				<Tasks tasksList={taskData.tasksList} onDelete={deleteTask} onToggle={onToggle} /> :
 				'No Tasks to Show'
