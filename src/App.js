@@ -1,31 +1,42 @@
 import { useState } from 'react'
 import Header from './components/Header'
+import AddForm from './components/AddForm'
 import Tasks from './components/Tasks'
 
 const App = () => {
-	const [tasksList, setTasks] = useState([
-		{
-			id: 1,
-			text: "Task 1",
-			day: "April 20 at 2:30pm",
-			reminder: true
-		}
-	]);
+	const [taskData, setTaskData] = useState({
+		maxid: 0,
+		tasksList: []
+	});
 
 	const deleteTask = (id) => {
-		setTasks(tasksList.filter((task) => task.id !== id));
-		// console.log(id);
+		setTaskData({
+			...taskData,
+			tasksList: taskData.tasksList.filter((task) => task.id !== id)
+		})
+	}
+
+	const addTask = (data) => {
+		data.id = taskData.maxid
+		setTaskData({
+			maxid: taskData.maxid + 1,
+			tasksList: [...taskData.tasksList, data]
+		})
 	}
 
 	const onToggle = (id) => {
-		console.log(id)
+		setTaskData({
+			...taskData,
+			tasksList: taskData.tasksList.map((task) => task.id === id ? { ...task, reminder: !task.reminder } : task)
+		})
 	}
 
 	return (
 		<div className='container'>
 			<Header />
-			{ tasksList.length > 0 ?
-				<Tasks tasksList={tasksList} onDelete={deleteTask} onToggle={onToggle} /> :
+			<AddForm addTask={addTask} />
+			{ taskData.tasksList.length > 0 ?
+				<Tasks tasksList={taskData.tasksList} onDelete={deleteTask} onToggle={onToggle} /> :
 				'No Tasks to Show'
 			}
 		</div>
